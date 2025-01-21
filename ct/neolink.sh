@@ -43,43 +43,7 @@ function update_script() {
         exit
     fi
 
-    # Crawling the new version and checking whether an update is required
-    RELEASE=$(curl -fsSL [RELEASE_URL] | [PARSE_RELEASE_COMMAND])
-    if [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]] || [[ ! -f /opt/${APP}_version.txt ]]; then
-        msg_info "Updating $APP"
 
-        # Stopping Services
-        msg_info "Stopping $APP"
-        systemctl stop [SERVICE_NAME]
-        msg_ok "Stopped $APP"
-
-        # Creating Backup
-        msg_info "Creating Backup"
-        tar -czf "/opt/${APP}_backup_$(date +%F).tar.gz" [IMPORTANT_PATHS]
-        msg_ok "Backup Created"
-
-        # Execute Update
-        msg_info "Updating $APP to v${RELEASE}"
-        [UPDATE_COMMANDS]
-        msg_ok "Updated $APP to v${RELEASE}"
-
-        # Starting Services
-        msg_info "Starting $APP"
-        systemctl start [SERVICE_NAME]
-        sleep 2
-        msg_ok "Started $APP"
-
-        # Cleaning up
-        msg_info "Cleaning Up"
-        rm -rf [TEMP_FILES]
-        msg_ok "Cleanup Completed"
-
-        # Last Action
-        echo "${RELEASE}" >/opt/${APP}_version.txt
-        msg_ok "Update Successful"
-    else
-        msg_ok "No update required. ${APP} is already at v${RELEASE}"
-    fi
     exit
 }
 
