@@ -34,6 +34,7 @@ $STD curl -L -o /tmp/neolink.zip "${DOWNLOAD_URL}"
 $STD unzip /tmp/neolink.zip
 $STD find -type f -exec mv {} . \;
 $STD find -type d -delete;
+LATEST_VERSION=$(RUST_LOG=error ./neolink -V | awk '{print $2}')
 $STD echo "${LATEST_VERSION}" > /opt/neolink/version
 echo 'bind = "0.0.0.0"' > /opt/neolink/neolink.toml
 $STD rm /tmp/neolink.zip
