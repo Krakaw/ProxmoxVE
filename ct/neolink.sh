@@ -76,6 +76,7 @@ function update_script() {
             curl -L -o /tmp/neolink.tar.gz "${DOWNLOAD_URL}"
             tar -xzf /tmp/neolink.tar.gz -C /opt/neolink --strip-components=1
             echo "${LATEST_VERSION}" > /opt/neolink/version
+            rm /tmp/neolink.tar.gz
             echo "Update complete!"
         else
             echo "Update skipped."
