@@ -10,11 +10,11 @@ APP="Neolink"
 # Name of the app (e.g. Google, Adventurelog, Apache-Guacamole"
 TAGS="dvr"
 # Tags for Proxmox VE, maximum 2 pcs., no spaces allowed, separated by a semicolon ; (e.g. database | adblock;dhcp)
-var_cpu="1"
+var_cpu="4"
 # Number of cores (1-X) (e.g. 4) - default are 2
-var_ram="1024"
+var_ram="4096"
 # Amount of used RAM in MB (e.g. 2048 or 4096)
-var_disk="4"
+var_disk="6"
 # Amount of used disk space in GB (e.g. 4 or 10)
 var_os="debian"
 # Default OS (e.g. debian, ubuntu, alpine)
