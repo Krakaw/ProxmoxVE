@@ -14,7 +14,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y curl sudo git mc
+$STD apt-get install -y curl sudo mc
 $STD apt-get install -y libgstrtspserver-1.0-0 \
                           libgstreamer1.0-0 \
                           libgstreamer-plugins-bad1.0-0 \
@@ -22,15 +22,18 @@ $STD apt-get install -y libgstrtspserver-1.0-0 \
                           gstreamer1.0-plugins-base \
                           gstreamer1.0-plugins-good \
                           gstreamer1.0-plugins-bad \
-                          libssl
+                          libssl3
 msg_ok "Installed Dependencies"
 
-msg_info "Cloning Neolink"
-cd /opt
-$STD git clone https://github.com/QuantumEntangledAndy/neolink.git -b master neolink
-cd neolink
-echo 'bind = "0.0.0.0"' > neolink.toml
-msg_ok "Cloned NeoLink"
+msg_info "Downloading Neolink"
+mkdir -p /opt/neolink
+REPO_URL="https://api.github.com/repos/QuantumEntangledAndy/neolink/releases/latest"
+DOWNLOAD_URL=$(curl -s ${REPO_URL} | grep -oP '"browser_download_url":\s*"\K[^"]+' | grep bullseye)
+$STD curl -L -o /tmp/neolink.tar.gz "${DOWNLOAD_URL}"
+$STD tar -xzf /tmp/neolink.tar.gz -C /opt/neolink --strip-components=1
+$STD echo "${LATEST_VERSION}" > /opt/neolink/version
+echo 'bind = "0.0.0.0"' > /opt/neolink/neolink.toml
+msg_ok "Downloaded NeoLink"
 
 msg_info "Creating Service"
 cat <<EOF >/etc/systemd/system/neolink.service
