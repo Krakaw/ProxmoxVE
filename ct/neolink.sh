@@ -5,23 +5,14 @@ source <(curl -s https://raw.githubusercontent.com/community-scripts/ProxmoxVE/m
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/QuantumEntangledAndy/neolink
 
-# App Default Values
 APP="Neolink"
-# Name of the app (e.g. Google, Adventurelog, Apache-Guacamole"
 TAGS="dvr"
-# Tags for Proxmox VE, maximum 2 pcs., no spaces allowed, separated by a semicolon ; (e.g. database | adblock;dhcp)
 var_cpu="4"
-# Number of cores (1-X) (e.g. 4) - default are 2
 var_ram="4096"
-# Amount of used RAM in MB (e.g. 2048 or 4096)
 var_disk="6"
-# Amount of used disk space in GB (e.g. 4 or 10)
 var_os="debian"
-# Default OS (e.g. debian, ubuntu, alpine)
 var_version="12"
-# Default OS version (e.g. 12 for debian, 24.04 for ubuntu, 3.20 for alpine)
 var_unprivileged="1"
-# 1 = unprivileged container, 0 = privileged container
 
 # App Output & Base Settings
 header_info "$APP"
@@ -31,6 +22,7 @@ base_settings
 variables
 color
 catch_errors
+
 function update_script() {
     header_info
     check_container_storage

@@ -26,7 +26,7 @@ $STD apt-get install -y libgstrtspserver-1.0-0 \
 msg_ok "Installed Dependencies"
 
 msg_info "Downloading Neolink"
-mkdir -p /opt/neolink
+$STD mkdir -p /opt/neolink
 REPO_URL="https://api.github.com/repos/QuantumEntangledAndy/neolink/releases/latest"
 DOWNLOAD_URL=$(curl -s ${REPO_URL} | grep -oP '"browser_download_url":\s*"\K[^"]+' | grep bullseye)
 $STD curl -L -o /tmp/neolink.tar.gz "${DOWNLOAD_URL}"
@@ -34,6 +34,7 @@ $STD tar -xzf /tmp/neolink.tar.gz -C /opt/neolink --strip-components=1
 $STD echo "${LATEST_VERSION}" > /opt/neolink/version
 echo 'bind = "0.0.0.0"' > /opt/neolink/neolink.toml
 $STD rm /tmp/neolink.tar.gz
+$STD cd /opt/neolink
 msg_ok "Downloaded NeoLink"
 
 msg_info "Creating Service"
