@@ -25,7 +25,7 @@ msg_info "Installing ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/lovelaze/nebula-sync/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 
 wget -q "https://github.com/lovelaze/nebula-sync/releases/download/v${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz" -O "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
-$STD tar -xzvf "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
+$STD tar -xzvf "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz" -C /tmp
 $STD mv /tmp/nebula-sync /usr/bin/${APPLICATION,,}
 msg_ok "Install ${APPLICATION} completed"
 
