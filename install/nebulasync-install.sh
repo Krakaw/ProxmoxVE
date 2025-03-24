@@ -30,7 +30,7 @@ $STD mv /tmp/nebula-sync "/usr/bin/${APPLICATION,,}"
 msg_ok "Install ${APPLICATION} completed"
 
 msg_info "Creating Service"
-cat <<EOT >/etc/systemd/system/${APPLICATION,,}.service
+cat <<EOT >"/etc/systemd/system/${APPLICATION,,}.service"
 [Unit]
 Description=${APPLICATION} Service
 After=network.target

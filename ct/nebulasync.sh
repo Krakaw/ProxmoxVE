@@ -37,9 +37,10 @@ function update_script() {
         msg_ok "Stopped Service"
 
         msg_info "Updating ${APP} to v${RELEASE}"
-        wget -q "https://github.com/lovelaze/nebula-sync/releases/download/v${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
-        $STD dpkg -i "nebula-sync_${RELEASE}_linux_amd64.tar.gz"
-        rm -f "nebula-sync_${RELEASE}_linux_amd64.tar.gz"
+        wget -q "https://github.com/lovelaze/nebula-sync/releases/download/v${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz" -O "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
+        $STD tar -C /tmp -xzvf "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz" 
+        $STD mv /tmp/nebula-sync "/usr/bin/${APPLICATION,,}"
+        rm -f "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
         echo "${RELEASE}" >"/opt/${APP}_version.txt"
         msg_ok "Updated ${APP} to v${RELEASE}"
 
