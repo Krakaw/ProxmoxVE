@@ -72,24 +72,55 @@ case $MODE_CHOICE in
         REPO_NAME=${REPO_NAME:-ProxmoxVE}
         read -p "Enter your branch name: " BRANCH_NAME
         
-        # Update paths in build.func
+        # Always update .func files
         msg_info "Updating build.func"
         sed -i "s|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}|g" misc/build.func
         msg_ok "Updated build.func"
         
-        # Update paths in install.func
         msg_info "Updating install.func"
         sed -i "s|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}|g" misc/install.func
         msg_ok "Updated install.func"
         
-        # Update paths in all ct/*.sh files
-        msg_info "Updating container scripts"
-        for file in ct/*.sh; do
-            if [ -f "$file" ]; then
-                sed -i "s|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}|g" "$file"
-            fi
-        done
-        msg_ok "Updated container scripts"
+        # Prompt for container scripts
+        echo -e "\nSelect container scripts to update:"
+        echo "1) Specific container script"
+        echo "2) All container scripts"
+        read -p "Enter choice (1/2): " SCRIPT_CHOICE
+        
+        case $SCRIPT_CHOICE in
+            1)
+                # List available container scripts
+                echo -e "\nAvailable container scripts:"
+                ls -1 ct/*.sh 2>/dev/null | sed 's|ct/||' | nl
+                read -p "Enter the number of the script to update: " SCRIPT_NUM
+                
+                # Get the script name from the number
+                SCRIPT_NAME=$(ls -1 ct/*.sh 2>/dev/null | sed 's|ct/||' | sed -n "${SCRIPT_NUM}p")
+                if [ -z "$SCRIPT_NAME" ]; then
+                    msg_error "Invalid script number"
+                    exit 1
+                fi
+                
+                msg_info "Updating ${SCRIPT_NAME}"
+                sed -i "s|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}|g" "ct/${SCRIPT_NAME}"
+                msg_ok "Updated ${SCRIPT_NAME}"
+                ;;
+                
+            2)
+                msg_info "Updating container scripts"
+                for file in ct/*.sh; do
+                    if [ -f "$file" ]; then
+                        sed -i "s|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}|g" "$file"
+                    fi
+                done
+                msg_ok "Updated container scripts"
+                ;;
+                
+            *)
+                msg_error "Invalid choice"
+                exit 1
+                ;;
+        esac
         
         echo -e "\n${GN}Successfully switched to development mode!${CL}"
         echo -e "Using repository: ${BL}${GITHUB_USERNAME}/${REPO_NAME}${CL}"
@@ -110,24 +141,55 @@ case $MODE_CHOICE in
             exit 0
         fi
         
-        # Update paths in build.func
+        # Always update .func files
         msg_info "Updating build.func"
         sed -i "s|https://raw.githubusercontent.com/.*/refs/heads/.*|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|g" misc/build.func
         msg_ok "Updated build.func"
         
-        # Update paths in install.func
         msg_info "Updating install.func"
         sed -i "s|https://raw.githubusercontent.com/.*/refs/heads/.*|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|g" misc/install.func
         msg_ok "Updated install.func"
         
-        # Update paths in all ct/*.sh files
-        msg_info "Updating container scripts"
-        for file in ct/*.sh; do
-            if [ -f "$file" ]; then
-                sed -i "s|https://raw.githubusercontent.com/.*/refs/heads/.*|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|g" "$file"
-            fi
-        done
-        msg_ok "Updated container scripts"
+        # Prompt for container scripts
+        echo -e "\nSelect container scripts to update:"
+        echo "1) Specific container script"
+        echo "2) All container scripts"
+        read -p "Enter choice (1/2): " SCRIPT_CHOICE
+        
+        case $SCRIPT_CHOICE in
+            1)
+                # List available container scripts
+                echo -e "\nAvailable container scripts:"
+                ls -1 ct/*.sh 2>/dev/null | sed 's|ct/||' | nl
+                read -p "Enter the number of the script to update: " SCRIPT_NUM
+                
+                # Get the script name from the number
+                SCRIPT_NAME=$(ls -1 ct/*.sh 2>/dev/null | sed 's|ct/||' | sed -n "${SCRIPT_NUM}p")
+                if [ -z "$SCRIPT_NAME" ]; then
+                    msg_error "Invalid script number"
+                    exit 1
+                fi
+                
+                msg_info "Updating ${SCRIPT_NAME}"
+                sed -i "s|https://raw.githubusercontent.com/.*/refs/heads/.*|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|g" "ct/${SCRIPT_NAME}"
+                msg_ok "Updated ${SCRIPT_NAME}"
+                ;;
+                
+            2)
+                msg_info "Updating container scripts"
+                for file in ct/*.sh; do
+                    if [ -f "$file" ]; then
+                        sed -i "s|https://raw.githubusercontent.com/.*/refs/heads/.*|https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main|g" "$file"
+                    fi
+                done
+                msg_ok "Updated container scripts"
+                ;;
+                
+            *)
+                msg_error "Invalid choice"
+                exit 1
+                ;;
+        esac
         
         echo -e "\n${GN}Successfully switched to production mode!${CL}"
         echo -e "Using repository: ${BL}community-scripts/ProxmoxVE${CL}"
