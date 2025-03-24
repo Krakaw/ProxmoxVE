@@ -22,7 +22,8 @@ msg_ok "Installed Dependencies"
 
 msg_info "Installing ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/lovelaze/nebula-sync/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-3) }')
-set -ex
+
+msg_info "https://github.com/lovelaze/nebula-sync/releases/download/${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
 wget -q "https://github.com/lovelaze/nebula-sync/releases/download/${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
 $STD dpkg -i "nebula-sync_${RELEASE}_linux_amd64.tar.gz"
 msg_ok "Install ${APPLICATION} completed"
