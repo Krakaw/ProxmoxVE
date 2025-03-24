@@ -26,24 +26,24 @@ RELEASE=$(curl -s https://api.github.com/repos/lovelaze/nebula-sync/releases/lat
 
 wget -q "https://github.com/lovelaze/nebula-sync/releases/download/v${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz" -O "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
 $STD tar -C /tmp -xzvf "/tmp/nebula-sync_${RELEASE}_linux_amd64.tar.gz" 
-$STD mv /tmp/nebula-sync "/usr/bin/${APPLICATION,,}"
+$STD mv /tmp/nebula-sync "/usr/bin/"
 msg_ok "Install ${APPLICATION} completed"
 
 msg_info "Creating Service"
-cat <<EOT >"/etc/systemd/system/${APPLICATION,,}.service"
+cat <<EOT >"/etc/systemd/system/nebula-sync.service"
 [Unit]
 Description=${APPLICATION} Service
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/${APPLICATION,,} run --env-file /etc/${APPLICATION,,}.env
+ExecStart=/usr/bin/nebula-sync run --env-file /etc/nebula-sync.env
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 EOT
-systemctl enable -q --now ${APPLICATION,,}
+systemctl enable -q --now nebula-sync
 msg_ok "Created Service"
 
 motd_ssh
@@ -56,7 +56,7 @@ $STD apt-get -y autoclean
 msg_ok "Cleaned"
 
 msg_info "Generating ${APPLICATION} Configuration"
-cat <<EOT >"/etc/${APPLICATION,,}.env"
+cat <<EOT >"/etc/nebula-sync.env"
 PRIMARY=http://ph1.example.com|password
 REPLICAS=http://ph2.example.com|password
 FULL_SYNC=false
@@ -80,5 +80,5 @@ SYNC_GRAVITY_DOMAIN_LIST_BY_GROUP=true
 SYNC_GRAVITY_CLIENT=true
 SYNC_GRAVITY_CLIENT_BY_GROUP=true
 EOT
-msg_ok "Generated ${APPLICATION} Configuration ${GREEN} /etc/${APPLICATION,,}.env ${CL}"
+msg_ok "Generated ${APPLICATION} Configuration ${GREEN} /etc/nebula-sync.env ${CL}"
 
