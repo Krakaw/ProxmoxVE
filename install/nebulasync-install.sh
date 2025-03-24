@@ -80,5 +80,5 @@ SYNC_GRAVITY_DOMAIN_LIST_BY_GROUP=true
 SYNC_GRAVITY_CLIENT=true
 SYNC_GRAVITY_CLIENT_BY_GROUP=true
 EOT
-msg_ok "Generated ${APPLICATION} Configuration ${GREEN} /etc/nebula-sync.env ${CL}"
+msg_ok "Generated ${APPLICATION} Configuration ${GN} /etc/nebula-sync.env ${CL}"
 
