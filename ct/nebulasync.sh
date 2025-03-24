@@ -30,16 +30,16 @@ function update_script() {
         exit
     fi
 
-    RELEASE=$(curl -s https://api.github.com/repos/lovelaze/nebula-sync/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+    RELEASE=$(curl -s https://api.github.com/repos/lovelaze/nebula-sync/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
     if [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
         msg_info "Stopping Service"
         systemctl stop ${APP,,}
         msg_ok "Stopped Service"
 
         msg_info "Updating ${APP} to v${RELEASE}"
-        wget -q "https://github.com/lovelaze/nebula-sync/releases/download/${RELEASE}/nebula-sync_0.7.0_linux_amd64.tar.gz/${RELEASE}}"
-        $STD dpkg -i "nebula-sync_0.7.0_linux_amd64.tar.gz/${RELEASE}}"
-        rm -f "nebula-sync_0.7.0_linux_amd64.tar.gz/${RELEASE}}"
+        wget -q "https://github.com/lovelaze/nebula-sync/releases/download/${RELEASE}/nebula-sync_${RELEASE}_linux_amd64.tar.gz"
+        $STD dpkg -i "nebula-sync_${RELEASE}_linux_amd64.tar.gz"
+        rm -f "nebula-sync_${RELEASE}_linux_amd64.tar.gz"
         echo "${RELEASE}" >"/opt/${APP}_version.txt"
         msg_ok "Updated ${APP} to v${RELEASE}"
 
@@ -58,5 +58,3 @@ description
 
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
-echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:80${CL}"
