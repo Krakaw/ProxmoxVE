@@ -201,5 +201,9 @@ case $MODE_CHOICE in
         exit 1
         ;;
 esac
-
+if [[ "$CURRENT_MODE" == "development" ]]; then
+    echo -e "\nbash -c "$(wget -qLO - https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/refs/heads/${BRANCH_NAME}/ct/$APPLICATION.sh)""
+else
+    echo -e "\nbash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/$APPLICATION.sh)""
+fi
 echo -e "\n${BL}Remember to commit your changes before submitting a pull request!${CL}" 

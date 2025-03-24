@@ -190,7 +190,7 @@ msg_info "Installing Dependencies"
 msg_ok "Installed Dependencies"
 
 msg_info "Installing \${APPLICATION}"
-RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-3) }')
+RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-4) }')
 wget -q "https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/\${RELEASE}/${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 \$STD dpkg -i "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 msg_ok "Install \${APPLICATION} completed"
