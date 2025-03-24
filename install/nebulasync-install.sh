@@ -56,7 +56,7 @@ $STD apt-get -y autoclean
 msg_ok "Cleaned"
 
 msg_info "Generating ${APPLICATION} Configuration"
-cat <<EOT >/etc/${APPLICATION,,}.env
+cat <<EOT >"/etc/${APPLICATION,,}.env"
 PRIMARY=http://ph1.example.com|password
 REPLICAS=http://ph2.example.com|password
 FULL_SYNC=false
