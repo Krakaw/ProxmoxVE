@@ -77,14 +77,28 @@ else
     UNPRIVILEGED="0"
 fi
 
+# GitHub executable download information
+read -p "Does this app have a pre-built executable on GitHub? (y/N): " HAS_EXECUTABLE
+HAS_EXECUTABLE=${HAS_EXECUTABLE:-N}
+if [[ ${HAS_EXECUTABLE^^} == "Y" ]]; then
+    read -p "Enter GitHub repository owner: " GITHUB_OWNER
+    read -p "Enter GitHub repository name: " GITHUB_REPO
+    read -p "Enter executable filename pattern (e.g., appname_VERSION_linux_amd64.deb): " EXECUTABLE_PATTERN
+    read -p "Enter default port: " DEFAULT_PORT
+    DEFAULT_PORT=${DEFAULT_PORT:-80}
+fi
+
 # Create directories if they don't exist
 msg_info "Creating directory structure"
 mkdir -p ct install
 msg_ok "Created directory structure"
 
+# Convert app name to lowercase and remove spaces for filenames
+APP_FILENAME=$(echo "${APP_NAME}" | tr '[:upper:]' '[:lower:]' | tr -d ' ')
+
 # Generate ct/AppName.sh
 msg_info "Generating container template"
-cat > "ct/${APP_NAME}.sh" << EOF
+cat > "ct/${APP_FILENAME}.sh" << EOF
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
 # Copyright (c) 2021-2025 community-scripts ORG
@@ -117,11 +131,22 @@ function update_script() {
         exit
     fi
 
-    RELEASE=\$(curl -s https://api.github.com/repos/OWNER/REPO/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-3) }')
+    RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-3) }')
     if [[ "\${RELEASE}" != "\$(cat /opt/\${APP}_version.txt)" ]]; then
-        msg_info "Updating \$APP"
-        # Add update logic here
-        msg_ok "Updated \$APP"
+        msg_info "Stopping Service"
+        systemctl stop \${APP,,}
+        msg_ok "Stopped Service"
+
+        msg_info "Updating \${APP} to v\${RELEASE}"
+        wget -q "https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/\${RELEASE}/${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
+        \$STD dpkg -i "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
+        rm -f "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
+        echo "\${RELEASE}" >"/opt/\${APP}_version.txt"
+        msg_ok "Updated \${APP} to v\${RELEASE}"
+
+        msg_info "Starting Service"
+        systemctl start \${APP,,}
+        msg_ok "Started Service"
     else
         msg_ok "No update required. \${APP} is already at v\${RELEASE}"
     fi
@@ -135,13 +160,13 @@ description
 msg_ok "Completed Successfully!\n"
 echo -e "\${CREATING}\${GN}\${APP} setup has been successfully initialized!\${CL}"
 echo -e "\${INFO}\${YW} Access it using the following URL:\${CL}"
-echo -e "\${TAB}\${GATEWAY}\${BGN}http://\${IP}:PORT\${CL}"
+echo -e "\${TAB}\${GATEWAY}\${BGN}http://\${IP}:${DEFAULT_PORT}\${CL}"
 EOF
 msg_ok "Generated container template"
 
 # Generate install/AppName-install.sh
 msg_info "Generating installation script"
-cat > "install/${APP_NAME}-install.sh" << EOF
+cat > "install/${APP_FILENAME}-install.sh" << EOF
 #!/usr/bin/env bash
 
 # Copyright (c) 2021-2025 community-scripts ORG
@@ -164,10 +189,11 @@ msg_info "Installing Dependencies"
     mc
 msg_ok "Installed Dependencies"
 
-msg_info "Setting up \${APPLICATION}"
-# Add installation logic here
-echo "\${RELEASE}" >"/opt/\${APPLICATION}_version.txt"
-msg_ok "Setup \${APPLICATION}"
+msg_info "Installing \${APPLICATION}"
+RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-3) }')
+wget -q "https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/\${RELEASE}/${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
+\$STD dpkg -i "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
+msg_ok "Install \${APPLICATION} completed"
 
 msg_info "Creating Service"
 cat <<EOT >/etc/systemd/system/\${APPLICATION,,}.service
@@ -177,7 +203,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/path/to/executable
+ExecStart=/usr/bin/\${APPLICATION,,}
 Restart=always
 
 [Install]
@@ -190,20 +216,59 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
+rm -f "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 \$STD apt-get -y autoremove
 \$STD apt-get -y autoclean
 msg_ok "Cleaned"
 EOF
 msg_ok "Generated installation script"
 
+# Generate application.json
+msg_info "Generating application.json"
+cat > "frontend/public/json/${APP_FILENAME}.json" << EOF
+{
+    "name": "${APP_NAME}",
+    "slug": "${APP_FILENAME}",
+    "categories": [],
+    "date_created": "$(date +%Y-%m-%d)",
+    "type": "ct",
+    "updateable": ${HAS_EXECUTABLE^^},
+    "privileged": ${UNPRIVILEGED},
+    "interface_port": ${DEFAULT_PORT:-80},
+    "documentation": null,
+    "website": "${SOURCE_URL}",
+    "logo": null,
+    "description": "A brief description of ${APP_NAME}.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/${APP_FILENAME}.sh",
+            "resources": {
+                "cpu": ${CPU_CORES},
+                "ram": ${RAM_SIZE},
+                "hdd": ${DISK_SIZE},
+                "os": "${OS}",
+                "version": "${OS_VERSION}"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
+}
+EOF
+msg_ok "Generated application.json"
+
 # Make scripts executable
 msg_info "Setting permissions"
-chmod +x "ct/${APP_NAME}.sh" "install/${APP_NAME}-install.sh"
+chmod +x "ct/${APP_FILENAME}.sh" "install/${APP_FILENAME}-install.sh"
 msg_ok "Set permissions"
 
 echo -e "\n${GN}Successfully generated app templates!${CL}"
 echo -e "\nNext steps:"
-echo -e "1. Edit ${BL}ct/${APP_NAME}.sh${CL} to customize the container creation"
-echo -e "2. Edit ${BL}install/${APP_NAME}-install.sh${CL} to implement the installation logic"
+echo -e "1. Edit ${BL}ct/${APP_FILENAME}.sh${CL} to customize the container creation"
+echo -e "2. Edit ${BL}install/${APP_FILENAME}-install.sh${CL} to implement the installation logic"
 echo -e "3. Test your scripts in a development environment"
 echo -e "4. Submit a pull request to the community scripts repository" 
