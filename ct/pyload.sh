@@ -6,13 +6,13 @@ source <(curl -s https://raw.githubusercontent.com/Krakaw/ProxmoxVE/refs/heads/p
 # Source: https://github.com/pyload/pyload
 
 # App Default Values
-APP="PyLoad"
+APP="pyload"
 var_tags="download;remote download"
 var_cpu="1"
 var_ram="512"
 var_disk="4"
-var_os="alpine"
-var_version="3.20"
+var_os="debian"
+var_version="12"
 var_unprivileged="1"
 
 header_info "$APP"

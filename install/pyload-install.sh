@@ -17,12 +17,14 @@ msg_info "Installing Dependencies"
 $STD apt-get install -y \
     curl \
     sudo \
+    python3-pip \
     mc
 msg_ok "Installed Dependencies"
 
 msg_info "Installing ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/pyload/pyload/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-pip install --pre pyload-ng[all]
+$STD pip install --upgrade pip
+$STD pip install --pre pyload-ng[all]
 msg_ok "Install ${APPLICATION} completed"
 
 msg_info "Creating Service"
