@@ -190,7 +190,7 @@ msg_info "Installing Dependencies"
 msg_ok "Installed Dependencies"
 
 msg_info "Installing \${APPLICATION}"
-RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-4) }')
+RELEASE=\$(curl -s https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest | grep "tag_name" | awk '{print substr(\$2, 2, length(\$2)-3) }')
 wget -q "https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/\${RELEASE}/${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 \$STD dpkg -i "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 msg_ok "Install \${APPLICATION} completed"
@@ -222,6 +222,44 @@ rm -f "${EXECUTABLE_PATTERN/\${VERSION}/\${RELEASE}}"
 msg_ok "Cleaned"
 EOF
 msg_ok "Generated installation script"
+
+# Generate application.json
+msg_info "Generating application.json"
+cat > "frontend/public/json/${APP_FILENAME}.json" << EOF
+{
+    "name": "${APP_NAME}",
+    "slug": "${APP_FILENAME}",
+    "categories": [],
+    "date_created": "$(date +%Y-%m-%d)",
+    "type": "ct",
+    "updateable": ${HAS_EXECUTABLE^^},
+    "privileged": ${UNPRIVILEGED},
+    "interface_port": ${DEFAULT_PORT:-80},
+    "documentation": null,
+    "website": "${SOURCE_URL}",
+    "logo": null,
+    "description": "A brief description of ${APP_NAME}.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/${APP_FILENAME}.sh",
+            "resources": {
+                "cpu": ${CPU_CORES},
+                "ram": ${RAM_SIZE},
+                "hdd": ${DISK_SIZE},
+                "os": "${OS}",
+                "version": "${OS_VERSION}"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": []
+}
+EOF
+msg_ok "Generated application.json"
 
 # Make scripts executable
 msg_info "Setting permissions"
