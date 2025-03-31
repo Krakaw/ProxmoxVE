@@ -30,16 +30,15 @@ function update_script() {
         exit
     fi
 
-    RELEASE=$(curl -s https://api.github.com/repos///releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+    RELEASE=$(curl -s https://api.github.com/repos/pyload/pyload/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
     if [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
         msg_info "Stopping Service"
         systemctl stop ${APP,,}
         msg_ok "Stopped Service"
 
         msg_info "Updating ${APP} to v${RELEASE}"
-        wget -q "https://github.com///releases/download/${RELEASE}//${RELEASE}}"
-        $STD dpkg -i "/${RELEASE}}"
-        rm -f "/${RELEASE}}"
+        $STD pip install --upgrade pip
+        $STD pip install --pre pyload-ng[all]
         echo "${RELEASE}" >"/opt/${APP}_version.txt"
         msg_ok "Updated ${APP} to v${RELEASE}"
 
@@ -59,4 +58,4 @@ description
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
 echo -e "${INFO}${YW} Access it using the following URL:${CL}"
-echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:${CL}"
+echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"
