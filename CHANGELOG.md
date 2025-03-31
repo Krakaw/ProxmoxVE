@@ -14,6 +14,183 @@ Exercise vigilance regarding copycat or coat-tailing sites that seek to exploit 
 All LXC instances created using this repository come pre-installed with Midnight Commander, which is a command-line tool (`mc`) that offers a user-friendly file and directory management interface for the terminal environment.
 
 
+## 2025-03-31
+
+### 🆕 New Scripts
+
+  - slskd [@vhsdream](https://github.com/vhsdream) ([#3516](https://github.com/community-scripts/ProxmoxVE/pull/3516))
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - Docmost: Bump NodeJS to 22 & fixed pnpm [@MickLesk](https://github.com/MickLesk) ([#3521](https://github.com/community-scripts/ProxmoxVE/pull/3521))
+    - Tianji: Bump NodeJS to V22 [@MickLesk](https://github.com/MickLesk) ([#3519](https://github.com/community-scripts/ProxmoxVE/pull/3519))
+
+  - #### ✨ New Features
+
+    - NPMPlus: update function & better create handling (user/password) [@MickLesk](https://github.com/MickLesk) ([#3520](https://github.com/community-scripts/ProxmoxVE/pull/3520))
+
+  - #### 🔧 Refactor
+
+    - Remove old `.jar` versions of Stirling-PDF [@JcMinarro](https://github.com/JcMinarro) ([#3512](https://github.com/community-scripts/ProxmoxVE/pull/3512))
+
+### 🌐 Website
+
+  - #### 📝 Script Information
+
+    - HomeAssistant (Container): Better Portainer explanation [@MickLesk](https://github.com/MickLesk) ([#3518](https://github.com/community-scripts/ProxmoxVE/pull/3518))
+
+## 2025-03-30
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - Open WebUI: Fix Ollama update logic [@tremor021](https://github.com/tremor021) ([#3506](https://github.com/community-scripts/ProxmoxVE/pull/3506))
+    - GoMFT: Add frontend build procedure [@tremor021](https://github.com/tremor021) ([#3499](https://github.com/community-scripts/ProxmoxVE/pull/3499))
+
+  - #### ✨ New Features
+
+    - Open WebUI: Add Ollama update check [@tremor021](https://github.com/tremor021) ([#3478](https://github.com/community-scripts/ProxmoxVE/pull/3478))
+
+## 2025-03-29
+
+### 🆕 New Scripts
+
+  - Alpine MariaDB [@MickLesk](https://github.com/MickLesk) ([#3456](https://github.com/community-scripts/ProxmoxVE/pull/3456))
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - Komodo: Fix wrong sed text [@tremor021](https://github.com/tremor021) ([#3491](https://github.com/community-scripts/ProxmoxVE/pull/3491))
+    - GoMFT: Fix release archive naming [@tremor021](https://github.com/tremor021) ([#3483](https://github.com/community-scripts/ProxmoxVE/pull/3483))
+    - Homepage: Fix release parsing [@tremor021](https://github.com/tremor021) ([#3484](https://github.com/community-scripts/ProxmoxVE/pull/3484))
+    - Netdata: Fix debian-keyring dependency missing [@tremor021](https://github.com/tremor021) ([#3477](https://github.com/community-scripts/ProxmoxVE/pull/3477))
+    - ErsatzTV: Fix temp file reference [@tremor021](https://github.com/tremor021) ([#3476](https://github.com/community-scripts/ProxmoxVE/pull/3476))
+    - Komodo: Fix compose.env [@tremor021](https://github.com/tremor021) ([#3466](https://github.com/community-scripts/ProxmoxVE/pull/3466))
+
+## 2025-03-28
+
+### 🆕 New Scripts
+
+  - Alpine Node-RED [@MickLesk](https://github.com/MickLesk) ([#3457](https://github.com/community-scripts/ProxmoxVE/pull/3457))
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - GoMFT: Fix release grep [@tremor021](https://github.com/tremor021) ([#3462](https://github.com/community-scripts/ProxmoxVE/pull/3462))
+    - ErsatzTV: Fix path in update function [@tremor021](https://github.com/tremor021) ([#3463](https://github.com/community-scripts/ProxmoxVE/pull/3463))
+
+## 2025-03-27
+
+### 🚀 Updated Scripts
+
+  - [core]: add functions for Alpine (update / core deps) [@MickLesk](https://github.com/MickLesk) ([#3437](https://github.com/community-scripts/ProxmoxVE/pull/3437))
+
+### 🧰 Maintenance
+
+  - #### 💾 Core
+
+    - [core]: Refactor Spinner/MSG Function (support now alpine / performance / handling) [@MickLesk](https://github.com/MickLesk) ([#3436](https://github.com/community-scripts/ProxmoxVE/pull/3436))
+
+## 2025-03-26
+
+### 🆕 New Scripts
+
+  - Alpine: Gitea [@MickLesk](https://github.com/MickLesk) ([#3424](https://github.com/community-scripts/ProxmoxVE/pull/3424))
+
+### 🚀 Updated Scripts
+
+  - FlowiseAI: Fix dependencies [@tremor021](https://github.com/tremor021) ([#3427](https://github.com/community-scripts/ProxmoxVE/pull/3427))
+
+  - #### 🐞 Bug Fixes
+
+    - fluid-calendar: Fix failed build during updates [@vhsdream](https://github.com/vhsdream) ([#3417](https://github.com/community-scripts/ProxmoxVE/pull/3417))
+
+### 🧰 Maintenance
+
+  - #### 📂 Github
+
+    - Remove coredeps in CONTRIBUTOR_AND_GUIDES [@bvdberg01](https://github.com/bvdberg01) ([#3420](https://github.com/community-scripts/ProxmoxVE/pull/3420))
+
+## 2025-03-25
+
+### 🧰 Maintenance
+
+  - #### 📂 Github
+
+    - Discord invite link updated [@MickLesk](https://github.com/MickLesk) ([#3412](https://github.com/community-scripts/ProxmoxVE/pull/3412))
+
+## 2025-03-24
+
+### 🆕 New Scripts
+
+  - fileflows [@kkroboth](https://github.com/kkroboth) ([#3392](https://github.com/community-scripts/ProxmoxVE/pull/3392))
+- wazuh [@omiinaya](https://github.com/omiinaya) ([#3381](https://github.com/community-scripts/ProxmoxVE/pull/3381))
+- yt-dlp-webui [@CrazyWolf13](https://github.com/CrazyWolf13) ([#3364](https://github.com/community-scripts/ProxmoxVE/pull/3364))
+- Extension/New Script: Redis Alpine Installation [@MickLesk](https://github.com/MickLesk) ([#3367](https://github.com/community-scripts/ProxmoxVE/pull/3367))
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - Extend HOME Env for Kubo [@MickLesk](https://github.com/MickLesk) ([#3397](https://github.com/community-scripts/ProxmoxVE/pull/3397))
+
+  - #### ✨ New Features
+
+    - [core] Rebase Scripts (formatting, highlighting & remove old deps) [@MickLesk](https://github.com/MickLesk) ([#3378](https://github.com/community-scripts/ProxmoxVE/pull/3378))
+
+  - #### 🔧 Refactor
+
+    - qBittorrent: Switch to static builds for faster updating/upgrading [@tremor021](https://github.com/tremor021) ([#3405](https://github.com/community-scripts/ProxmoxVE/pull/3405))
+    - Refactor: ErsatzTV Script [@MickLesk](https://github.com/MickLesk) ([#3365](https://github.com/community-scripts/ProxmoxVE/pull/3365))
+
+### 🧰 Maintenance
+
+  - #### ✨ New Features
+
+    - [core] install core deps (debian / ubuntu) [@MickLesk](https://github.com/MickLesk) ([#3366](https://github.com/community-scripts/ProxmoxVE/pull/3366))
+
+  - #### 💾 Core
+
+    - [core] extend hardware transcoding for fileflows #3392 [@MickLesk](https://github.com/MickLesk) ([#3396](https://github.com/community-scripts/ProxmoxVE/pull/3396))
+
+  - #### 📂 Github
+
+    - Refactor Changelog Workflow [@michelroegl-brunner](https://github.com/michelroegl-brunner) ([#3371](https://github.com/community-scripts/ProxmoxVE/pull/3371))
+
+### 🌐 Website
+
+  - Update siteConfig.tsx to use new analytics code [@BramSuurdje](https://github.com/BramSuurdje) ([#3389](https://github.com/community-scripts/ProxmoxVE/pull/3389))
+
+  - #### 🐞 Bug Fixes
+
+    - Better Text for Version Date [@michelroegl-brunner](https://github.com/michelroegl-brunner) ([#3388](https://github.com/community-scripts/ProxmoxVE/pull/3388))
+
+## 2025-03-23
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - GoMFT: Check if build-essential is present before updating, if not then install it [@tremor021](https://github.com/tremor021) ([#3358](https://github.com/community-scripts/ProxmoxVE/pull/3358))
+
+## 2025-03-22
+
+### 🚀 Updated Scripts
+
+  - #### 🐞 Bug Fixes
+
+    - revealjs: Fix update process [@tremor021](https://github.com/tremor021) ([#3341](https://github.com/community-scripts/ProxmoxVE/pull/3341))
+    - Cronicle: add missing gnupg package [@MickLesk](https://github.com/MickLesk) ([#3323](https://github.com/community-scripts/ProxmoxVE/pull/3323))
+
+  - #### ✨ New Features
+
+    - Update nextcloud-vm.sh to 18.1 ISO [@0xN0BADC0FF33](https://github.com/0xN0BADC0FF33) ([#3333](https://github.com/community-scripts/ProxmoxVE/pull/3333))
+
 ## 2025-03-21
 
 ### 🚀 Updated Scripts

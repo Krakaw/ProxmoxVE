@@ -6,7 +6,7 @@
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/msgbyte/tianji
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -21,19 +21,16 @@ $STD apt-get install -y \
   cmake \
   g++ \
   build-essential \
-  curl \
-  sudo \
   git \
   make \
   gnupg \
-  ca-certificates \
-  mc
+  ca-certificates
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Node.js"
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
 $STD apt-get update
 $STD apt-get install -y nodejs
 $STD npm install -g pnpm@9.7.1
@@ -47,7 +44,7 @@ DB_PASS="$(openssl rand -base64 18 | cut -c1-13)"
 TIANJI_SECRET="$(openssl rand -base64 32 | cut -c1-24)"
 $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
 $STD sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';"
-$STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;" 
+$STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
 $STD sudo -u postgres psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USER;"
 $STD sudo -u postgres psql -c "ALTER USER $DB_USER WITH SUPERUSER;"
 echo "" >>~/tianji.creds
